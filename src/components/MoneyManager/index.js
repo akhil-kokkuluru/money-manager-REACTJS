@@ -1,6 +1,9 @@
-import {Component} from 'react'
 import './index.css'
+import {Component} from 'react'
+
 import MoneyDetails from '../MoneyDetails'
+
+import TransactionItem from '../TransactionItem'
 
 const transactionTypeOptions = [
   {
@@ -64,14 +67,15 @@ class MoneyManager extends Component {
                 </button>
               </form>
             </div>
-            <div className="rightTableContainer">
+            <ul className="rightTableContainer">
               <h1 className="historyCss">History</h1>
-              <div className="historyContainer">
+              <li className="historyContainer">
                 <h1 className="Hitems">Title</h1>
                 <h1 className="Hitems">Amount</h1>
                 <h1 className="Hitems">Type</h1>
-              </div>
-            </div>
+              </li>
+              <TransactionItem />
+            </ul>
           </div>
         </div>
       </div>

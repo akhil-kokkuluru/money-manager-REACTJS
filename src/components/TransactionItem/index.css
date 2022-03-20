@@ -1,1 +1,35 @@
-/* Write your CSS here */
+.transactionContainer {
+  border: 1px solid #cbd5e1;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  align-self: center;
+  width: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.Titems {
+  font-size: 12px;
+  width: 30%;
+}
+.imgCss {
+  width: 30px;
+  height: 30px;
+}
+.transaction-item {
+  display: flex;
+  flex-direction: row;
+  width: 90%;
+}
+.buttons {
+  background-color: transparent;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  outline: none;
+  cursor: pointer;
+  border: 0px;
+}
