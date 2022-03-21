@@ -87,3 +87,11 @@
   font-size: 23px;
   margin-top: 20px;
 }
+@media screen and (max-width: 768px) {
+  .balanceText {
+    font-size: 18px;
+  }
+  .amountText {
+    font-size: 19px;
+  }
+}

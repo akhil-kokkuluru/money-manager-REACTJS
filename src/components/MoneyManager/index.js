@@ -1,4 +1,5 @@
 import './index.css'
+import {v4} from 'uuid'
 import {Component} from 'react'
 
 import MoneyDetails from '../MoneyDetails'
@@ -17,7 +18,96 @@ const transactionTypeOptions = [
 ]
 
 class MoneyManager extends Component {
+  state = {
+    title: '',
+    amount: '',
+    type: transactionTypeOptions[0].optionId,
+    transactionList: [],
+  }
+
+  onTitleTyping = event => {
+    this.setState({title: event.target.value})
+  }
+
+  onAmountTyping = event => {
+    this.setState({amount: event.target.value})
+  }
+
+  onTypeSelection = event => {
+    this.setState({type: event.target.value})
+  }
+
+  onSubmitting = event => {
+    event.preventDefault()
+    const {title, amount, type} = this.state
+    const transactionItem = {
+      idVal: v4(),
+      titleVal: title,
+      amountVal: amount,
+      typeVal: type,
+    }
+
+    this.setState(prevValue => ({
+      title: '',
+      amount: '',
+      transactionList: [...prevValue.transactionList, transactionItem],
+      type: transactionTypeOptions[0].optionId,
+    }))
+  }
+
+  getIncome = () => {
+    const {transactionList} = this.state
+    let incomeAmountValue = 0
+    transactionList.forEach(item => {
+      if (item.typeVal === transactionTypeOptions[0].displayText) {
+        incomeAmountValue += parseInt(item.amountVal)
+      }
+    })
+    return incomeAmountValue
+  }
+
+  getExpenses = () => {
+    const {transactionList} = this.state
+    let expensesAmountValue = 0
+    transactionList.forEach(item => {
+      if (item.typeVal === transactionTypeOptions[1].displayText) {
+        expensesAmountValue += parseInt(item.amountVal)
+      }
+    })
+    return expensesAmountValue
+  }
+
+  getBalance = () => {
+    const {transactionList} = this.state
+    let balanceAmount = 0
+    let incomeAmount = 0
+    let expensesAmount = 0
+    transactionList.forEach(element => {
+      if (element.typeVal === transactionTypeOptions[0].displayText) {
+        incomeAmount += parseInt(element.amountVal)
+      } else {
+        expensesAmount += parseInt(element.amountVal)
+      }
+    })
+    balanceAmount = incomeAmount - expensesAmount
+    return balanceAmount
+  }
+
+  onclickDelete = idValue => {
+    const {transactionList} = this.state
+    this.setState({
+      transactionList: transactionList.filter(
+        valueID => valueID.idVal !== idValue,
+      ),
+    })
+  }
+
   render() {
+    const {transactionList} = this.state
+    const balance = this.getBalance()
+    const income = this.getIncome()
+    const expenses = this.getExpenses()
+
     return (
       <div className="totalContainer">
         <div className="contentContainer">
@@ -28,11 +118,15 @@ class MoneyManager extends Component {
             </p>
           </div>
           <div className="moneyDetailsContainer">
-            <MoneyDetails />
+            <MoneyDetails
+              balance={balance}
+              income={income}
+              expenses={expenses}
+            />
           </div>
           <div className="tables">
             <div className="leftTableContainer">
-              <form className="leftTable">
+              <form className="leftTable" onSubmit={this.onSubmitting}>
                 <h1 className="table-Heading">Add Transaction</h1>
                 <label className="labelCss" htmlFor="title">
                   TITLE
@@ -42,6 +136,7 @@ class MoneyManager extends Component {
                   type="text"
                   placeholder="TITLE"
                   id="title"
+                  onChange={this.onTitleTyping}
                 />
                 <label className="labelCss" htmlFor="amount">
                   AMOUNT
@@ -49,15 +144,20 @@ class MoneyManager extends Component {
                 <input
                   className="inputcss"
                   type="text"
-                  placeholder="TITLE"
+                  placeholder="AMOUNT"
                   id="amount"
+                  onChange={this.onAmountTyping}
                 />
                 <label className="labelCss" htmlFor="options">
                   TYPE
                 </label>
-                <select id="options" className="inputcss">
+                <select
+                  id="options"
+                  className="inputcss"
+                  onChange={this.onTypeSelection}
+                >
                   {transactionTypeOptions.map(item => (
-                    <option className="options" value={item.optionIds}>
+                    <option className="options" value={item.optionId}>
                       {item.displayText}
                     </option>
                   ))}
@@ -70,11 +170,20 @@ class MoneyManager extends Component {
             <ul className="rightTableContainer">
               <h1 className="historyCss">History</h1>
               <li className="historyContainer">
-                <h1 className="Hitems">Title</h1>
-                <h1 className="Hitems">Amount</h1>
-                <h1 className="Hitems">Type</h1>
+                <p className="Hitems">Title</p>
+                <p className="Hitems">Amount</p>
+                <p className="Hitems">Type</p>
               </li>
-              <TransactionItem />
+              {transactionList.map(item => (
+                <TransactionItem
+                  id={item.idVal}
+                  key={item.idVal}
+                  title={item.titleVal}
+                  amount={item.amountVal}
+                  type={item.typeVal}
+                  onclickDelete={this.onclickDelete}
+                />
+              ))}
             </ul>
           </div>
         </div>

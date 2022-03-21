@@ -13,10 +13,25 @@
   font-size: 12px;
   width: 30%;
 }
+@media screen and (max-width: 768px) {
+  .Titems {
+    font-size: 10px;
+  }
+}
 .imgCss {
   width: 30px;
   height: 30px;
 }
+@media screen and (max-width: 768px) {
+  .Titems {
+    font-size: 10px;
+  }
+  .imgCss {
+    width: 20px;
+    height: 20px;
+  }
+}
+
 .transaction-item {
   display: flex;
   flex-direction: row;
