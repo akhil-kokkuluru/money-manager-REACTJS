@@ -43,14 +43,14 @@ class MoneyManager extends Component {
     const transactionItem = {
       idVal: v4(),
       titleVal: title,
-      amountVal: amount,
+      amountVal: parseInt(amount),
       typeVal: type,
     }
 
     this.setState(prevValue => ({
+      transactionList: [...prevValue.transactionList, transactionItem],
       title: '',
       amount: '',
-      transactionList: [...prevValue.transactionList, transactionItem],
       type: transactionTypeOptions[0].optionId,
     }))
   }
@@ -59,7 +59,7 @@ class MoneyManager extends Component {
     const {transactionList} = this.state
     let incomeAmountValue = 0
     transactionList.forEach(item => {
-      if (item.typeVal === transactionTypeOptions[0].displayText) {
+      if (item.typeVal === transactionTypeOptions[0].optionId) {
         incomeAmountValue += parseInt(item.amountVal)
       }
     })
@@ -70,7 +70,7 @@ class MoneyManager extends Component {
     const {transactionList} = this.state
     let expensesAmountValue = 0
     transactionList.forEach(item => {
-      if (item.typeVal === transactionTypeOptions[1].displayText) {
+      if (item.typeVal === transactionTypeOptions[1].optionId) {
         expensesAmountValue += parseInt(item.amountVal)
       }
     })
@@ -83,13 +83,15 @@ class MoneyManager extends Component {
     let incomeAmount = 0
     let expensesAmount = 0
     transactionList.forEach(element => {
-      if (element.typeVal === transactionTypeOptions[0].displayText) {
+      if (element.typeVal === transactionTypeOptions[0].optionId) {
         incomeAmount += parseInt(element.amountVal)
       } else {
         expensesAmount += parseInt(element.amountVal)
       }
     })
     balanceAmount = incomeAmount - expensesAmount
+    console.log(transactionTypeOptions[0].displayText)
+    console.log(transactionList)
     return balanceAmount
   }
 
@@ -103,7 +105,7 @@ class MoneyManager extends Component {
   }
 
   render() {
-    const {transactionList} = this.state
+    const {transactionList, type, amount, title} = this.state
     const balance = this.getBalance()
     const income = this.getIncome()
     const expenses = this.getExpenses()
@@ -135,6 +137,7 @@ class MoneyManager extends Component {
                   className="inputcss"
                   type="text"
                   placeholder="TITLE"
+                  value={title}
                   id="title"
                   onChange={this.onTitleTyping}
                 />
@@ -146,6 +149,7 @@ class MoneyManager extends Component {
                   type="text"
                   placeholder="AMOUNT"
                   id="amount"
+                  value={amount}
                   onChange={this.onAmountTyping}
                 />
                 <label className="labelCss" htmlFor="options">
@@ -155,6 +159,7 @@ class MoneyManager extends Component {
                   id="options"
                   className="inputcss"
                   onChange={this.onTypeSelection}
+                  value={type}
                 >
                   {transactionTypeOptions.map(item => (
                     <option className="options" value={item.optionId}>
