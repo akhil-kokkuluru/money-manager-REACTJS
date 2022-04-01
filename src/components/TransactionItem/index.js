@@ -1,7 +1,7 @@
 import './index.css'
 
 const TransactionItem = props => {
-  const {id, title, amount, type, onclickDelete} = props
+  const {id, title, amount, onclickDelete, value} = props
 
   const onDeleteClick = () => {
     onclickDelete(id)
@@ -13,7 +13,7 @@ const TransactionItem = props => {
       <div className="transaction-item">
         <h1 className="Titems">{title}</h1>
         <h1 className="Titems">{rupees}</h1>
-        <h1 className="Titems">{type}</h1>
+        <h1 className="Titems">{value}</h1>
       </div>
       <button
         className="buttons"

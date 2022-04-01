@@ -21,7 +21,7 @@ class MoneyManager extends Component {
   state = {
     title: '',
     amount: '',
-    type: transactionTypeOptions[0].optionId,
+    type: transactionTypeOptions[0].displayText,
     transactionList: [],
   }
 
@@ -45,13 +45,14 @@ class MoneyManager extends Component {
       titleVal: title,
       amountVal: parseInt(amount),
       typeVal: type,
+      value: type.toUpperCase(),
     }
 
     this.setState(prevValue => ({
       transactionList: [...prevValue.transactionList, transactionItem],
       title: '',
       amount: '',
-      type: transactionTypeOptions[0].optionId,
+      type: transactionTypeOptions[0].displayText,
     }))
   }
 
@@ -90,8 +91,6 @@ class MoneyManager extends Component {
       }
     })
     balanceAmount = incomeAmount - expensesAmount
-    console.log(transactionTypeOptions[0].displayText)
-    console.log(transactionList)
     return balanceAmount
   }
 
@@ -162,12 +161,20 @@ class MoneyManager extends Component {
                   value={type}
                 >
                   {transactionTypeOptions.map(item => (
-                    <option className="options" value={item.optionId}>
+                    <option
+                      className="options"
+                      value={item.optionId}
+                      key={item.optionId}
+                    >
                       {item.displayText}
                     </option>
                   ))}
                 </select>
-                <button className="buttonAdd" type="submit">
+                <button
+                  className="buttonAdd"
+                  type="submit"
+                  onClick={this.onSubmitting}
+                >
                   Add
                 </button>
               </form>
@@ -179,6 +186,7 @@ class MoneyManager extends Component {
                 <p className="Hitems">Amount</p>
                 <p className="Hitems">Type</p>
               </li>
+
               {transactionList.map(item => (
                 <TransactionItem
                   id={item.idVal}
@@ -187,6 +195,7 @@ class MoneyManager extends Component {
                   amount={item.amountVal}
                   type={item.typeVal}
                   onclickDelete={this.onclickDelete}
+                  value={item.value}
                 />
               ))}
             </ul>
